@@ -1,0 +1,1 @@
+export { EditAutomata } from "./EditAutomata";

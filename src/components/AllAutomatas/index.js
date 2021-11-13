@@ -1,0 +1,1 @@
+export { AllAutomatas } from "./AllAutomatas";

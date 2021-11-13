@@ -1,0 +1,50 @@
+body {
+  /*margin-top: 100px;*/
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:visited {
+  color: black;
+}
+
+a:-webkit-any-link {
+  color: black;
+}
+
+.simple-button {
+  background-color: #34FDB6;
+  border-color: white;
+
+  margin: 15px;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 25px;
+
+  transition: 0.5s;
+
+  cursor: pointer;
+
+  /*text-align: center;*/
+  /*align-items: center;*/
+}
+
+.simple-button:hover {
+  background-color: white;
+  border-color: #34FDB6;
+}
+
+.incorrect-login {
+  color: red;
+}
+
+.save-error {
+  margin: 0;
+  color: red;
+  grid-area: C;
+}
+

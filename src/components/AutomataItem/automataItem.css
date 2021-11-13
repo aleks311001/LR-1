@@ -1,0 +1,114 @@
+.automata-item {
+    /*margin: 10px 15px;*/
+    background-color: #E0FFE9;
+    height: 250px;
+    border: #69D385 2px solid;
+    border-radius: 15px;
+    padding: 0 15px;
+    display: grid;
+    grid-template-columns: 35% 30% 35%;
+    grid-template-rows: 50px 30px auto;
+    grid-template-areas:
+            "A D E"
+            "B D E"
+            "C D E";
+
+    align-items: center;
+    /*justify-items: center;*/
+
+    margin: 10px;
+    transition: 0.5s;
+}
+
+.automata-item:hover {
+    height: 260px;
+    margin: 5px;
+    /*margin-left: 0;*/
+    /*margin-right: 0;*/
+}
+
+.automata-name {
+    grid-area: A;
+    font-size: 35px;
+    margin: 15px 0;
+}
+
+.automata-date {
+    grid-area: B;
+}
+
+.automata-regexp {
+    grid-area: C;
+    height: 170px;
+
+    align-self: end;
+    bottom: 0;
+
+    word-break: break-all;
+    overflow-y: auto;
+    font-size: 20px;
+    padding-top: 0;
+    margin: 0;
+    transition: inherit;
+}
+
+.automata-item:hover .automata-regexp {
+    height: 180px;
+}
+
+.automata-regexp::-webkit-scrollbar {
+    width: 15px;
+}
+.automata-regexp::-webkit-scrollbar-thumb {
+    background-color: #006A21;    /* цвет плашки */
+    border-radius: 100px;       /* закругления плашки */
+    border: 6px solid #E0FFE9;
+    /*padding: 5px;*/
+    /*border: 1px solid orange;  !* padding вокруг плашки *!*/
+}
+
+.automata-item .grammar {
+    box-sizing: border-box;
+
+    background-color: #A7FFCE;
+    height: 220px;
+    border: #00AD49 2px solid;
+    border-radius: 9px;
+    padding-left: 15px;
+    margin: 15px;
+
+    font-size: 25px;
+    overflow-y: auto;
+    /*scroll-padding-top: 50px;*/
+    transition: inherit;
+
+    grid-area: D;
+}
+
+.automata-item:hover .grammar {
+    height: 230px;
+    margin: 5px 15px;
+}
+
+.automata-item .grammar::-webkit-scrollbar {
+    width: 15px;
+    /*padding: 5px;*/
+}
+.automata-item .grammar::-webkit-scrollbar-thumb {
+    background-color: #006A21;
+    border-radius: 100px;
+    border: 6px solid #A7FFCE;
+    /*padding: 5px;*/
+}
+
+.automata-item .grammar .expr {
+    margin: 10px 0;
+}
+
+.automata-sketch {
+    margin: auto;
+    max-height: calc(100% - 30px);
+    max-width: calc(100% - 30px);
+    border-radius: 9px;
+    grid-area: E;
+}

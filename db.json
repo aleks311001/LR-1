@@ -1,0 +1,59 @@
+{
+  "users": [
+    {
+      "name": "Александр",
+      "mail": "mail",
+      "login": "aleks311001",
+      "password": "password",
+      "id": 1
+    },
+    {
+      "name": "Игорь",
+      "mail": "maill",
+      "login": "igor",
+      "password": "password",
+      "id": 2
+    },
+    {
+      "name": "ААААА",
+      "mail": "E-mail",
+      "login": "login",
+      "password": "password",
+      "id": 3
+    }
+  ],
+  "automatas": [
+    {
+      "name": "Автомат 1",
+      "grammar": [
+        "S -> aSbS",
+        "S -> $",
+        "S -> $",
+        "S -> $",
+        "S -> $"
+      ],
+      "regexp": "",
+      "user_id": 1,
+      "id": 1
+    },
+    {
+      "name": "Автомат 2",
+      "grammar": [
+        "S -> S'",
+        "S -> ASB"
+      ],
+      "user_id": 1,
+      "id": 5
+    },
+    {
+      "name": "sdfsdfd",
+      "grammar": [
+        "fsdfsd"
+      ],
+      "regexp": "dsfsdgsdgdf",
+      "date": "13.11.2021",
+      "user_id": 3,
+      "id": 6
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+.create-automata {
+    display: grid;
+    grid-template-columns: 33.33% 33.34% 33.33%;
+    grid-template-rows: 70px calc(100vh - 240px) 70px;
+    grid-template-areas:
+            "A D D"
+            "B D D"
+            "C C E";
+
+    align-items: stretch;
+    justify-items: stretch;
+}
+
+.name {
+    background-color: #E0FFE9;
+    border: #69D385 2px solid;
+    border-radius: 15px;
+    margin: 10px;
+    grid-area: A;
+
+    padding-left: 10px;
+    outline: none;
+    font-size: 30px;
+    height: 50px;
+}
+
+.create-automata .grammar {
+    background-color: #E0FFE9;
+    border: #69D385 2px solid;
+    border-radius: 10px;
+    margin: 10px;
+    grid-area: B;
+
+    padding-top: 10px;
+    padding-left: 10px;
+    outline: none;
+    font-size: 30px;
+    resize: none;
+    overflow-y: auto;
+}
+
+.create-automata .grammar::-webkit-scrollbar {
+    width: 18px;
+    /*padding: 5px;*/
+}
+.create-automata .grammar::-webkit-scrollbar-thumb {
+    background-color: #006A21;
+    border-radius: 10px;
+    border: 7px solid #E0FFE9;
+    /*padding: 5px;*/
+}
+
+.regexp {
+    background-color: #E0FFE9;
+    border: #69D385 2px solid;
+    border-radius: 15px;
+    margin: 10px;
+    grid-area: C;
+
+    padding-left: 10px;
+    outline: none;
+    font-size: 30px;
+    height: 50px;
+    /*align-self: center;*/
+}
+
+.automata {
+    background-color: #E0FFE9;
+    border: #69D385 2px solid;
+    border-radius: 15px;
+    margin: 10px;
+    grid-area: D;
+    padding: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.automata img {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.buttons {
+    grid-area: E;
+    height: 50px;
+}
+
+.buttons button {
+    width: 40%;
+    height: inherit;
+    font-size: 25px;
+}
