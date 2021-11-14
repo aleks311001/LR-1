@@ -33,6 +33,12 @@ export function Automata(props) {
     dispatch(fetchAutomata(user.id, automataId));
   }, []);
 
+  React.useEffect(() => {
+    setName(automata.name);
+    setGrammar(automata.grammar.join("\n"));
+    setRegexp(automata.regexp);
+  }, [automata]);
+
   if (automataId) {
     if (isError) {
       return <h1>Произошла ошибка при загрузке автомата</h1>;
@@ -55,7 +61,6 @@ export function Automata(props) {
       return;
     }
 
-    console.log(grammar.split("\n"));
     const automata = {
       name,
       grammar: grammar.split("\n"),
@@ -118,3 +123,8 @@ export function Automata(props) {
     </div>
   );
 }
+
+// {
+//   type: "SET_AUTOMATA",
+//   payload: {name: "name", grammar: ["S", "SDS"], regexp: "reg", date: "13.10.2021", user_id: 1, id: 1},
+// }

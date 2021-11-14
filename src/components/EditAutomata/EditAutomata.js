@@ -41,13 +41,11 @@ export function EditAutomata() {
   };
 
   return (
-    <>
-      <Automata
-        automataId={automataId}
-        // defaultAutomata={defaultAutomata}
-        img="/img1.png"
-        handleSave={handleSave}
-      />
-    </>
+    <Automata
+      automataId={automataId}
+      // defaultAutomata={defaultAutomata}
+      img="/img1.png"
+      handleSave={handleSave}
+    />
   );
 }

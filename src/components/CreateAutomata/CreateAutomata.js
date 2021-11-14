@@ -30,9 +30,5 @@ export function CreateAutomata() {
       });
   };
 
-  return (
-    <>
-      <Automata handleSave={handleSave} />
-    </>
-  );
+  return <Automata handleSave={handleSave} />;
 }

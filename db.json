@@ -20,11 +20,18 @@
       "login": "login",
       "password": "password",
       "id": 3
+    },
+    {
+      "name": "Тестовый юзер",
+      "mail": "test",
+      "login": "test",
+      "password": "test",
+      "id": 4
     }
   ],
   "automatas": [
     {
-      "name": "Автомат 1",
+      "name": "Автомат 3",
       "grammar": [
         "S -> aSbS",
         "S -> $",
@@ -33,6 +40,7 @@
         "S -> $"
       ],
       "regexp": "",
+      "date": "14.11.2021",
       "user_id": 1,
       "id": 1
     },
@@ -42,6 +50,7 @@
         "S -> S'",
         "S -> ASB"
       ],
+      "date": "14.11.2021",
       "user_id": 1,
       "id": 5
     },
@@ -54,6 +63,54 @@
       "date": "13.11.2021",
       "user_id": 3,
       "id": 6
+    },
+    {
+      "name": "Автомат 1",
+      "grammar": [
+        "S' -> S",
+        "S -> abS",
+        "S -> $"
+      ],
+      "regexp": "(ab)*",
+      "date": "14.11.2021",
+      "user_id": 4,
+      "id": 7
+    },
+    {
+      "name": "Автомат 2",
+      "grammar": [
+        "S -> T",
+        "T -> aSbS",
+        "S -> $"
+      ],
+      "regexp": "regexp...",
+      "date": "14.11.2021",
+      "user_id": 4,
+      "id": 8
+    },
+    {
+      "name": "Автомат 3",
+      "grammar": [
+        "S -> Sa",
+        "S -> Sa",
+        "S -> Sa",
+        "S -> Sa",
+        "S -> Sa",
+        "S -> Sa",
+        "S -> Sa"
+      ],
+      "date": "14.11.2021",
+      "user_id": 4,
+      "id": 9
+    },
+    {
+      "name": "Автомат 4",
+      "grammar": [
+        ""
+      ],
+      "date": "14.11.2021",
+      "user_id": 4,
+      "id": 10
     }
   ]
 }
