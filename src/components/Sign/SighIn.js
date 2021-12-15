@@ -1,29 +1,36 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setUser } from "../../actions/user";
 import "./sign.css";
-import { ErrorMsg } from "./ErrorMsg";
+import { useAuth } from "./useAuth";
 
 export function SighIn() {
-  const dispatch = useDispatch();
-  const [login, setLogin] = React.useState("Логин");
-  const [password, setPassword] = React.useState("Пароль");
-  const [isCorrectPassword, setIsCorrectPassword] = React.useState(true);
-  const history = useHistory();
+  const [login, setLogin] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [error, setError] = React.useState("");
+  const { onAuth } = useAuth(setError);
+
+  React.useEffect(() => {
+    if (error) {
+      setError("");
+    }
+  }, [login, password]);
 
   const handleClick = async (event) => {
     event.preventDefault();
 
-    const response = await fetch(`http://localhost:3001/users?login=${login}`);
-    const user = await response.json();
+    if (!login) {
+      setError("Введите логин");
+      return;
+    }
 
-    if (user.length > 0 && password === user[0].password) {
-      setIsCorrectPassword(true);
-      dispatch(setUser(user[0]));
-      history.push("/");
-    } else {
-      setIsCorrectPassword(false);
+    if (!password) {
+      setError("Введите пароль");
+      return;
+    }
+
+    try {
+      await onAuth(login, password);
+    } catch (err) {
+      //
     }
   };
 
@@ -35,9 +42,9 @@ export function SighIn() {
       <form>
         <div>
           <input
-            name="title"
             type="text"
-            placeholder={login}
+            placeholder="Логин"
+            value={login}
             onChange={(event) => {
               setLogin(event.target.value);
             }}
@@ -46,22 +53,18 @@ export function SighIn() {
 
         <div>
           <input
-            name="description"
             type="password"
-            placeholder={password}
+            placeholder="Пароль"
+            value={password}
             onChange={(event) => {
               setPassword(event.target.value);
             }}
           />
         </div>
 
-        <ErrorMsg
-          isCorrect={isCorrectPassword}
-          text="Неверные логин или пароль"
-          cssName="incorrect-login"
-        />
+        <div className="incorrect-login">{error}</div>
 
-        <button type="SignIn" className="simple-button" onClick={handleClick}>
+        <button type="submit" className="simple-button" onClick={handleClick}>
           Вход
         </button>
       </form>

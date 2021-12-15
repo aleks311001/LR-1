@@ -3,6 +3,7 @@ export const SET_AUTOMATAS_LIST = "SET_AUTOMATAS_LIST";
 export const SET_ERROR = "SET_ERROR";
 export const SET_CLEAN = "SET_CLEAN";
 export const SET_ACCESS_DENIED = "SET_ACCESS_DENIED";
+export const DELETE_AUTOMATA = "DELETE_AUTOMATA";
 
 const initialState = {
   automatasIdxs: [],
@@ -25,18 +26,14 @@ export function automatas(state = initialState, action) {
 
     case SET_ERROR: {
       return {
-        automatasIdxs: state.automatasIdxs,
-        automatas: state.automatas,
+        ...state,
         isError: true,
-        isAccessDenied: false,
       };
     }
 
     case SET_ACCESS_DENIED: {
       return {
-        automatasIdxs: state.automatasIdxs,
-        automatas: state.automatas,
-        isError: false,
+        ...state,
         isAccessDenied: true,
       };
     }
@@ -63,6 +60,16 @@ export function automatas(state = initialState, action) {
 
     case SET_CLEAN: {
       return initialState;
+    }
+
+    case DELETE_AUTOMATA: {
+      const automataId = action.payload;
+      return {
+        ...state,
+        automatasIdxs: state.automatasIdxs.filter(function (item) {
+          return item !== automataId;
+        }),
+      };
     }
 
     default: {

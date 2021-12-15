@@ -6,7 +6,7 @@ import { Spinner } from "../Spinner";
 import { ErrorMsg } from "../Sign/ErrorMsg";
 
 export function Automata(props) {
-  const { automataId, img, handleSave } = props;
+  const { automataId, img, handleSave, handleDelete } = props;
   const dispatch = useDispatch();
 
   const automataStore = useSelector((state) => {
@@ -15,13 +15,13 @@ export function Automata(props) {
     }
     return state.automatas.automatas[automataId];
   });
-  const automata = automataStore || { grammar: [] };
+  const automata = automataStore || {};
   const user = useSelector((state) => state.user.user) || {};
   const isError = useSelector((state) => state.automatas.isError);
   const isAccessDenied = useSelector((state) => state.automatas.isAccessDenied);
 
   const [name, setName] = React.useState(automata.name);
-  const [grammar, setGrammar] = React.useState(automata.grammar.join("\n"));
+  const [grammar, setGrammar] = React.useState(automata.grammar);
   const [regexp, setRegexp] = React.useState(automata.regexp);
 
   const [isClickUnlogin, setIsClick] = React.useState(false);
@@ -33,11 +33,11 @@ export function Automata(props) {
     dispatch(fetchAutomata(user.id, automataId));
   }, []);
 
-  React.useEffect(() => {
-    setName(automata.name);
-    setGrammar(automata.grammar.join("\n"));
-    setRegexp(automata.regexp);
-  }, [automata]);
+  // React.useEffect(() => {
+  //   setName(automata.name);
+  //   setGrammar(automata.grammar);
+  //   setRegexp(automata.regexp);
+  // }, [automata]);
 
   if (automataId) {
     if (isError) {
@@ -63,13 +63,33 @@ export function Automata(props) {
 
     const automata = {
       name,
-      grammar: grammar.split("\n"),
+      grammar,
       regexp,
-      date: new Date().toLocaleDateString(),
-      user_id: user.id,
     };
 
-    handleSave(automata);
+    handleSave(automata, true);
+  };
+
+  const onClickDelete = (event) => {
+    event.preventDefault();
+    handleDelete(automataId);
+  };
+
+  const onClickBuild = (event) => {
+    event.preventDefault();
+
+    if (!user.id) {
+      setIsClick(true);
+      return;
+    }
+
+    const automata = {
+      name,
+      grammar,
+      regexp,
+    };
+
+    handleSave(automata, false);
   };
 
   return (
@@ -102,18 +122,21 @@ export function Automata(props) {
       />
 
       <div className="automata-img">
-        {() => {
-          if (img !== "") return <img src={img} alt="Empty automata" />;
-        }}
-        {/*<p>{latex}</p>*/}
-        {/*<script type="text/tikz">{latex}</script>*/}
+        {img !== "" && <img src={automata.image} alt="Empty automata" />}
       </div>
 
       <div className="buttons">
-        <button className="simple-button">Построить</button>
+        <button className="simple-button" onClick={onClickBuild}>
+          Построить
+        </button>
         <button className="simple-button" onClick={onClickSave}>
           Сохранить
         </button>
+        {handleDelete && (
+          <button className="simple-button" onClick={onClickDelete}>
+            Удалить
+          </button>
+        )}
         <ErrorMsg
           isCorrect={!isClickUnlogin}
           text="Для сохранения надо залогиниться"

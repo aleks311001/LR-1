@@ -2,7 +2,8 @@ import { Automata } from "../Automata";
 import { useHistory, useParams } from "react-router-dom";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { setAutomata } from "../../actions/automatas";
+import { deleteAutomata, setAutomata } from "../../actions/automatas";
+import { ApiClientService } from "../../services/ApiClientService";
 
 export function EditAutomata() {
   const params = useParams();
@@ -25,27 +26,39 @@ export function EditAutomata() {
   //     .then((automata) => setAutomata(automata));
   // }, []);
 
-  const handleSave = (automata) => {
-    fetch(`http://localhost:3001/automatas/${automataId}`, {
+  const handleSave = async (automata, return_main) => {
+    const data = await ApiClientService(`automatas/${automataId}/`, {
       headers: {
         "Content-Type": "Application/json",
       },
       body: JSON.stringify(automata),
       method: "PUT",
-    })
-      .then((response) => response.json())
-      .then((updatedAutomata) => {
-        dispatch(setAutomata(updatedAutomata));
-        history.push(`/`);
-      });
+    });
+
+    dispatch(setAutomata(data));
+    if (return_main) {
+      history.push(`/`);
+    }
+  };
+
+  const handleDelete = async (automataId) => {
+    const data = await ApiClientService(`automatas/${automataId}/`, {
+      headers: {
+        "Content-Type": "Application/json",
+      },
+      method: "DELETE",
+    });
+
+    dispatch(deleteAutomata(automataId));
+    history.push(`/`);
   };
 
   return (
     <Automata
       automataId={automataId}
-      // defaultAutomata={defaultAutomata}
       img="/img1.png"
       handleSave={handleSave}
+      handleDelete={handleDelete}
     />
   );
 }

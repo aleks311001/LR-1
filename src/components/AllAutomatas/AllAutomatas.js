@@ -15,7 +15,7 @@ export function AllAutomatas() {
 
   React.useEffect(() => {
     dispatch(fetchAutomatas(user.id));
-  }, []);
+  }, [user]);
 
   if (isAccessDenied) {
     return <h1>Для просмотра сохраненных автоматов надо войти в аккаунт</h1>;

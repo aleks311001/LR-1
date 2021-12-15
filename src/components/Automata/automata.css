@@ -85,18 +85,21 @@
 .buttons {
     grid-area: E;
     /*height: 50px;*/
-    display: grid;
-    grid-template-columns: 50% 50%;
-    grid-template-rows: minmax(0, 100px);
-    grid-template-areas: "A B"
-                         ". C";
+    display: flex;
+    align-items: center;
+    width: 100%;
+    /*grid-template-columns: 50% 50%;*/
+    /*grid-template-rows: minmax(0, 100px);*/
+    /*grid-template-areas: "A B"*/
+    /*                     ". C";*/
 }
 
 .buttons button {
-    width: 90%;
+    width: 100%;
     height: 50px;
     font-size: 25px;
+    margin: 5px;
     /*margin: auto auto 0;*/
-    justify-self: center;
-    align-self: center;
+    /*justify-self: center;*/
+    /*align-self: center;*/
 }

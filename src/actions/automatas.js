@@ -5,7 +5,9 @@ import {
   SET_CLEAN,
   SET_ERROR,
   SET_ACCESS_DENIED,
+  DELETE_AUTOMATA,
 } from "../reducers/automatas";
+import { ApiClientService } from "../services/ApiClientService";
 
 const automataSchema = new schema.Entity("automatas");
 
@@ -27,6 +29,13 @@ export function setAutomata(data) {
   return {
     type: SET_AUTOMATA,
     payload: data,
+  };
+}
+
+export function deleteAutomata(automataId) {
+  return {
+    type: DELETE_AUTOMATA,
+    payload: automataId,
   };
 }
 
@@ -56,15 +65,8 @@ export function fetchAutomatas(user_id) {
     }
 
     try {
-      // console.log("fetch");
-      const response = await fetch(
-        `http://localhost:3001/automatas?user_id=${user_id}`
-      );
-      // console.log("response");
-      const data = await response.json();
-      // console.log("dispatch");
-      dispatch(setAutomatas(data));
-      // console.log("end");
+      const data = await ApiClientService(`automatas?user_id=${user_id}`);
+      dispatch(setAutomatas(data.results));
     } catch {
       dispatch(setError());
     }
@@ -74,13 +76,10 @@ export function fetchAutomatas(user_id) {
 export function fetchAutomata(user_id, automata_id) {
   return async (dispatch) => {
     try {
-      const response = await fetch(
-        `http://localhost:3001/automatas/${automata_id}`
-      );
-      const data = await response.json();
+      const data = await ApiClientService(`automatas/${automata_id}`);
 
       if (data.user_id === user_id) {
-        dispatch(setAutomata(data));
+        dispatch(setAutomata(data.results));
       } else {
         dispatch(setAccessDenied());
       }

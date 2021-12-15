@@ -6,7 +6,9 @@ export function AutomataItem(props) {
   const { automataId } = props;
   const automata = useSelector(
     (state) => state.automatas.automatas[automataId]
-  ) || { grammar: [] };
+  );
+
+  // console.log(automata);
 
   return (
     <Link to={"/automata/" + automata.id}>
@@ -16,16 +18,17 @@ export function AutomataItem(props) {
         <p className="automata-regexp">{automata.regexp}</p>
 
         <div className="grammar">
-          {automata.grammar.map((item, index) => (
-            <p className="expr" key={index}>
-              {item}
-            </p>
-          ))}
+          {automata.grammar &&
+            automata.grammar.split("\n").map((item, index) => (
+              <p className="expr" key={index}>
+                {item}
+              </p>
+            ))}
         </div>
 
         <img
           className="automata-sketch"
-          src="img1.png"
+          src={automata.image}
           alt="Картинка не найдена, попробуйте запустить алгоритм заново"
         />
       </div>

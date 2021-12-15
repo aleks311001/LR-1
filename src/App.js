@@ -7,8 +7,23 @@ import { CreateAutomata } from "./components/CreateAutomata";
 import About from "./components/About";
 import { SignUp } from "./components/Sign";
 import { EditAutomata } from "./components/EditAutomata";
+import { ApiClientService } from "./services/ApiClientService";
+import { setUser } from "./actions/user";
+import { useDispatch } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 export default function App() {
+  const dispatch = useDispatch();
+
+  const fetchUser = async () => {
+    const user = await ApiClientService("user/current/");
+    dispatch(setUser(user));
+  };
+
+  React.useEffect(() => {
+    void fetchUser();
+  }, []);
+
   return (
     <>
       <Router>
@@ -33,6 +48,10 @@ export default function App() {
 
           <Route path="/sigh_up">
             <SignUp />
+          </Route>
+
+          <Route path="/sigh_out">
+            <Redirect to="/" />
           </Route>
 
           <Route path="/">
