@@ -13,6 +13,7 @@ export function user(state = initialState, action) {
       };
 
     case CLEAN_USER:
+      // console.log("HERE");
       return {
         user: null,
       };

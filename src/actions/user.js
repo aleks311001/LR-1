@@ -8,6 +8,8 @@ export function setUser(payload) {
 }
 
 export function exitUser() {
+  window.localStorage.clear();
+
   return {
     type: CLEAN_USER,
   };

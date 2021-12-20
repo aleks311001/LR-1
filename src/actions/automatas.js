@@ -6,18 +6,34 @@ import {
   SET_ERROR,
   SET_ACCESS_DENIED,
   DELETE_AUTOMATA,
+  SET_AUTOMATAS_LIST_MORE,
 } from "../reducers/automatas";
 import { ApiClientService } from "../services/ApiClientService";
+import { BAD_REFRESH_TOKEN } from "../constants/constants";
+import { exitUser, setUser } from "./user";
 
 const automataSchema = new schema.Entity("automatas");
 
-function setAutomatas(data) {
+function setAutomatas(data, count) {
   // console.log(data);
   const { result, entities } = normalize(data, [automataSchema]);
   // console.log(result, entities);
 
   return {
     type: SET_AUTOMATAS_LIST,
+    payload: {
+      count,
+      automatasIdxs: result,
+      automatas: entities.automatas,
+    },
+  };
+}
+
+function setAutomatasMore(data) {
+  const { result, entities } = normalize(data, [automataSchema]);
+
+  return {
+    type: SET_AUTOMATAS_LIST_MORE,
     payload: {
       automatasIdxs: result,
       automatas: entities.automatas,
@@ -39,15 +55,10 @@ export function deleteAutomata(automataId) {
   };
 }
 
-function setError() {
+export function setError(errorMsg) {
   return {
     type: SET_ERROR,
-  };
-}
-
-function setAccessDenied() {
-  return {
-    type: SET_ACCESS_DENIED,
+    payload: errorMsg,
   };
 }
 
@@ -57,31 +68,54 @@ export function setClean() {
   };
 }
 
-export function fetchAutomatas(user_id) {
+export function fetchAutomatas() {
   return async (dispatch) => {
-    if (!user_id) {
-      dispatch(setAccessDenied());
-      return;
-    }
-
     try {
-      const data = await ApiClientService(`automatas?user_id=${user_id}`);
-      dispatch(setAutomatas(data.results));
+      const data = await ApiClientService(`automatas/`);
+      // console.log(data);
+      if (data !== BAD_REFRESH_TOKEN) {
+        dispatch(setAutomatas(data.results, data.count));
+      } else {
+        dispatch(exitUser());
+      }
     } catch {
       dispatch(setError());
     }
   };
 }
 
-export function fetchAutomata(user_id, automata_id) {
+export function fetchAutomatasMore() {
+  return async (dispatch, getState) => {
+    try {
+      const state = getState();
+      const page = state.automatas.page;
+      // console.log(page, user_id);
+      const data = await ApiClientService(`automatas?page=${page + 1}`);
+      if (data !== BAD_REFRESH_TOKEN) {
+        dispatch(setAutomatasMore(data.results));
+      } else {
+        dispatch(exitUser());
+      }
+    } catch {
+      dispatch(setError());
+    }
+  };
+}
+
+export function fetchAutomata(automata_id) {
   return async (dispatch) => {
     try {
       const data = await ApiClientService(`automatas/${automata_id}`);
 
-      if (data.user_id === user_id) {
-        dispatch(setAutomata(data.results));
+      if (data === BAD_REFRESH_TOKEN) {
+        dispatch(exitUser());
+        return;
+      }
+
+      if (data.detail === "Not found.") {
+        dispatch(setError("Автомат не найден."));
       } else {
-        dispatch(setAccessDenied());
+        dispatch(setAutomata(data));
       }
     } catch {
       dispatch(setError());

@@ -2,8 +2,10 @@ import React from "react";
 import { Automata } from "../Automata";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setAutomata } from "../../actions/automatas";
+import { deleteAutomata, setAutomata } from "../../actions/automatas";
 import { ApiClientService } from "../../services/ApiClientService";
+import { BAD_REFRESH_TOKEN } from "../../constants/constants";
+import { exitUser } from "../../actions/user";
 
 export function CreateAutomata() {
   // const [latex, setLatex] = React.useState("");
@@ -17,6 +19,8 @@ export function CreateAutomata() {
   const dispatch = useDispatch();
 
   const handleSave = async (automata, return_main) => {
+    // console.log(automata);
+
     const data = await ApiClientService("automatas/", {
       headers: {
         "Content-Type": "Application/json",
@@ -25,11 +29,17 @@ export function CreateAutomata() {
       method: "POST",
     });
 
-    console.log(data);
+    if (data !== BAD_REFRESH_TOKEN) {
+      dispatch(setAutomata(data));
+    } else {
+      dispatch(exitUser());
+    }
+    // console.log(data);
 
-    dispatch(setAutomata(data));
     if (return_main) {
       history.push(`/`);
+    } else {
+      history.push(`/automata/${data.id}`);
     }
   };
 

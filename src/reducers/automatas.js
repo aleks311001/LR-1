@@ -2,14 +2,16 @@ export const SET_AUTOMATA = "SET_AUTOMATA";
 export const SET_AUTOMATAS_LIST = "SET_AUTOMATAS_LIST";
 export const SET_ERROR = "SET_ERROR";
 export const SET_CLEAN = "SET_CLEAN";
-export const SET_ACCESS_DENIED = "SET_ACCESS_DENIED";
 export const DELETE_AUTOMATA = "DELETE_AUTOMATA";
+export const SET_AUTOMATAS_LIST_MORE = "SET_AUTOMATAS_LIST_MORE";
 
 const initialState = {
   automatasIdxs: [],
   automatas: {},
   isError: false,
-  isAccessDenied: false,
+  errorMsg: "",
+  page: 0,
+  count: 0,
 };
 
 export function automatas(state = initialState, action) {
@@ -17,10 +19,25 @@ export function automatas(state = initialState, action) {
     case SET_AUTOMATAS_LIST: {
       // console.log("SET_AUTOMATAS_LIST", state, action);
       return {
+        ...state,
         automatasIdxs: action.payload.automatasIdxs,
         automatas: action.payload.automatas,
         isError: false,
-        isAccessDenied: false,
+        page: 1,
+        count: action.payload.count,
+      };
+    }
+
+    case SET_AUTOMATAS_LIST_MORE: {
+      return {
+        ...state,
+        automatasIdxs: [
+          ...state.automatasIdxs,
+          ...action.payload.automatasIdxs,
+        ],
+        automatas: { ...state.automatas, ...action.payload.automatas },
+        isError: false,
+        page: state.page + 1,
       };
     }
 
@@ -28,13 +45,7 @@ export function automatas(state = initialState, action) {
       return {
         ...state,
         isError: true,
-      };
-    }
-
-    case SET_ACCESS_DENIED: {
-      return {
-        ...state,
-        isAccessDenied: true,
+        errorMsg: action.payload,
       };
     }
 
@@ -48,13 +59,13 @@ export function automatas(state = initialState, action) {
       }
 
       return {
+        ...state,
         automatasIdxs,
         automatas: {
           ...state.automatas,
           [automata.id]: automata,
         },
         isError: false,
-        isAccessDenied: false,
       };
     }
 

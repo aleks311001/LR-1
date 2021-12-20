@@ -19,7 +19,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from .view import UserViewSet, CurrentUser
-from automatas.views import AutomataListView
+from automatas.views import AutomataListView, BuildAutomata
 from rest_framework import routers
 import debug_toolbar
 from rest_framework_simplejwt.views import (
@@ -34,9 +34,9 @@ router.register('users', UserViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
-    # path('api/build/', ),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/user/current/', CurrentUser.as_view(), name='current_user'),
+    path('build/', BuildAutomata.as_view()),
     path('__debug__/', include(debug_toolbar.urls)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

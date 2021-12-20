@@ -1,6 +1,8 @@
-const apiBase = "http://localhost:8000/api/";
+import { BAD_REFRESH_TOKEN, HOST_ADDR } from "../constants/constants";
 
-export async function ApiClientService(url, options = {}) {
+const apiBase = `http://${HOST_ADDR}/api/`;
+
+export async function ApiClientService(url, options = {}, dispatch) {
   const access = window.localStorage.getItem("ACCESS");
   const headers = options.headers || {};
   if (access) {
@@ -13,6 +15,11 @@ export async function ApiClientService(url, options = {}) {
 
   if (response.status === 401) {
     const refresh = window.localStorage.getItem("REFRESH");
+
+    if (refresh === null) {
+      return BAD_REFRESH_TOKEN;
+    }
+
     const refreshResponse = await fetch(`${apiBase}token/refresh/`, {
       method: "POST",
       headers: {

@@ -4,6 +4,8 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { deleteAutomata, setAutomata } from "../../actions/automatas";
 import { ApiClientService } from "../../services/ApiClientService";
+import { BAD_REFRESH_TOKEN } from "../../constants/constants";
+import { exitUser } from "../../actions/user";
 
 export function EditAutomata() {
   const params = useParams();
@@ -35,7 +37,12 @@ export function EditAutomata() {
       method: "PUT",
     });
 
-    dispatch(setAutomata(data));
+    if (data !== BAD_REFRESH_TOKEN) {
+      dispatch(setAutomata(data));
+    } else {
+      dispatch(exitUser());
+    }
+
     if (return_main) {
       history.push(`/`);
     }
@@ -49,14 +56,18 @@ export function EditAutomata() {
       method: "DELETE",
     });
 
-    dispatch(deleteAutomata(automataId));
+    if (data !== BAD_REFRESH_TOKEN) {
+      dispatch(deleteAutomata(automataId));
+    } else {
+      dispatch(exitUser());
+    }
+
     history.push(`/`);
   };
 
   return (
     <Automata
       automataId={automataId}
-      img="/img1.png"
       handleSave={handleSave}
       handleDelete={handleDelete}
     />

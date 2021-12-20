@@ -8,16 +8,21 @@ import About from "./components/About";
 import { SignUp } from "./components/Sign";
 import { EditAutomata } from "./components/EditAutomata";
 import { ApiClientService } from "./services/ApiClientService";
-import { setUser } from "./actions/user";
+import { exitUser, setUser } from "./actions/user";
 import { useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
+import { BAD_REFRESH_TOKEN } from "./constants/constants";
 
 export default function App() {
   const dispatch = useDispatch();
 
   const fetchUser = async () => {
     const user = await ApiClientService("user/current/");
-    dispatch(setUser(user));
+    if (user !== BAD_REFRESH_TOKEN) {
+      dispatch(setUser(user));
+    } else {
+      dispatch(exitUser());
+    }
   };
 
   React.useEffect(() => {

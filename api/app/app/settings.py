@@ -140,7 +140,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 REST_FRAMEWORK = {
-    # 'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticatedOrReadOnly'],
+    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticatedOrReadOnly'],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -155,3 +155,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = ('http://localhost:3000',)
+
+ADMIN_EMAIL_PROTOCOL = 'smtp.yandex.ru:465'
+ADMIN_EMAIL = config['email']['EMAIL']
+ADMIN_PASSWORD = config['email']['PASSWORD']

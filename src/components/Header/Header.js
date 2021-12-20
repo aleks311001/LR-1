@@ -22,7 +22,7 @@ export function Header() {
                 to="/sign_out"
                 onClick={() => {
                   dispatch(exitUser());
-                  window.localStorage.clear();
+                  // window.localStorage.clear();
                 }}
               >
                 Выход

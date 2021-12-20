@@ -15,7 +15,7 @@ export function AutomataItem(props) {
       <div className="automata-item">
         <p className="automata-name">{automata.name}</p>
         <p className="automata-date">{automata.date}</p>
-        <p className="automata-regexp">{automata.regexp}</p>
+        <p className="automata-word_checked">{automata.word_checked}</p>
 
         <div className="grammar">
           {automata.grammar &&

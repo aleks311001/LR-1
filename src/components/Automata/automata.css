@@ -1,11 +1,11 @@
 .automata {
     display: grid;
-    grid-template-columns: 33.33% 33.34% 33.33%;
+    grid-template-columns: 35% 15% 50%;
     grid-template-rows: 70px calc(100vh - 240px) 70px;
     grid-template-areas:
             "A D D"
             "B D D"
-            "C C E";
+            "C F E";
 
     align-items: stretch;
     justify-items: stretch;
@@ -50,7 +50,7 @@
     /*padding: 5px;*/
 }
 
-.regexp {
+.word_checked {
     background-color: #E0FFE9;
     border: #69D385 2px solid;
     border-radius: 15px;
@@ -102,4 +102,30 @@
     /*margin: auto auto 0;*/
     /*justify-self: center;*/
     /*align-self: center;*/
+}
+
+.save-error {
+    /*margin: 0;*/
+    color: red;
+    /*grid-area: C;*/
+}
+
+.word_result {
+    grid-area: F;
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+.word-in-lang {
+    color: green;
+    margin: 10px;
+    font-size: 30px;
+}
+
+.word-not-in-lang {
+    /*height: 70px;*/
+    margin: 10px;
+    color: red;
+    font-size: 30px;
 }

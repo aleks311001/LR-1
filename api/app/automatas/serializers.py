@@ -8,5 +8,5 @@ class AutomataSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Automata
-        fields = ['id', 'name', 'grammar', 'regexp', 'image', 'user', 'date']
+        fields = ['id', 'name', 'grammar', 'word_checked', 'image', 'user', 'date']
         read_only_fields = ['user', 'date']

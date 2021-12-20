@@ -1,6 +1,7 @@
 import React from "react";
 import "./sign.css";
 import { useAuth } from "./useAuth";
+import { HOST_ADDR } from "../../constants/constants";
 
 export function SignUp() {
   const [email, setEmail] = React.useState("");
@@ -33,12 +34,14 @@ export function SignUp() {
       return;
     }
 
-    await fetch("http://localhost:8000/api/users/", {
+    const user = { username: login, password, email };
+
+    await fetch(`http://${HOST_ADDR}/api/users/`, {
       method: "POST",
       headers: {
         "Content-Type": "Application/json",
       },
-      body: JSON.stringify({ username: login, password, email }),
+      body: JSON.stringify(user),
     });
 
     await onAuth(login, password);

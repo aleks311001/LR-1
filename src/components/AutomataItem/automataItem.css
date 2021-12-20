@@ -37,7 +37,7 @@
     grid-area: B;
 }
 
-.automata-regexp {
+.automata-word_checked {
     grid-area: C;
     height: 170px;
 
@@ -52,14 +52,14 @@
     transition: inherit;
 }
 
-.automata-item:hover .automata-regexp {
+.automata-item:hover .automata-word_checked {
     height: 180px;
 }
 
-.automata-regexp::-webkit-scrollbar {
+.automata-word_checked::-webkit-scrollbar {
     width: 15px;
 }
-.automata-regexp::-webkit-scrollbar-thumb {
+.automata-word_checked::-webkit-scrollbar-thumb {
     background-color: #006A21;    /* цвет плашки */
     border-radius: 100px;       /* закругления плашки */
     border: 6px solid #E0FFE9;

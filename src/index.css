@@ -42,9 +42,3 @@ a:-webkit-any-link {
   color: red;
 }
 
-.save-error {
-  margin: 0;
-  color: red;
-  grid-area: C;
-}
-

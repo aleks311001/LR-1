@@ -4,9 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAutomata } from "../../actions/automatas";
 import { Spinner } from "../Spinner";
 import { ErrorMsg } from "../Sign/ErrorMsg";
+import { ApiClientService } from "../../services/ApiClientService";
+import { HOST_ADDR } from "../../constants/constants";
 
 export function Automata(props) {
-  const { automataId, img, handleSave, handleDelete } = props;
+  const { automataId, handleSave, handleDelete } = props;
   const dispatch = useDispatch();
 
   const automataStore = useSelector((state) => {
@@ -18,11 +20,13 @@ export function Automata(props) {
   const automata = automataStore || {};
   const user = useSelector((state) => state.user.user) || {};
   const isError = useSelector((state) => state.automatas.isError);
-  const isAccessDenied = useSelector((state) => state.automatas.isAccessDenied);
+  const errorMsg = useSelector((state) => state.automatas.errorMsg);
 
   const [name, setName] = React.useState(automata.name);
   const [grammar, setGrammar] = React.useState(automata.grammar);
-  const [regexp, setRegexp] = React.useState(automata.regexp);
+  const [word_checked, setWord] = React.useState(automata.word_checked);
+  const [image, setImage] = React.useState(automata.image);
+  const [word_result, setResult] = React.useState(automata.word_result);
 
   const [isClickUnlogin, setIsClick] = React.useState(false);
 
@@ -30,22 +34,22 @@ export function Automata(props) {
     if (automataStore || !automataId) {
       return;
     }
-    dispatch(fetchAutomata(user.id, automataId));
+    dispatch(fetchAutomata(automataId));
   }, []);
 
   // React.useEffect(() => {
   //   setName(automata.name);
   //   setGrammar(automata.grammar);
-  //   setRegexp(automata.regexp);
+  //   setWord(automata.word_checked);
   // }, [automata]);
 
   if (automataId) {
     if (isError) {
-      return <h1>Произошла ошибка при загрузке автомата</h1>;
-    }
-
-    if (isAccessDenied) {
-      return <h1>У вас нет доступа к этому автомату</h1>;
+      if (!errorMsg) {
+        return <h1>Произошла ошибка при загрузке автомата</h1>;
+      } else {
+        return <h1>{errorMsg}</h1>;
+      }
     }
 
     if (!automataStore) {
@@ -64,7 +68,8 @@ export function Automata(props) {
     const automata = {
       name,
       grammar,
-      regexp,
+      word_checked: word_checked || "",
+      // image: (image || "").split("/media/")[1],
     };
 
     handleSave(automata, true);
@@ -75,22 +80,33 @@ export function Automata(props) {
     handleDelete(automataId);
   };
 
-  const onClickBuild = (event) => {
+  const onClickBuild = async (event) => {
     event.preventDefault();
-
-    if (!user.id) {
-      setIsClick(true);
-      return;
-    }
 
     const automata = {
       name,
       grammar,
-      regexp,
+      word_checked: word_checked || "",
     };
 
-    handleSave(automata, false);
+    const response = await fetch(`http://${HOST_ADDR}/build/`, {
+      headers: {
+        "Content-Type": "Application/json",
+      },
+      body: JSON.stringify(automata),
+      method: "POST",
+    });
+    const data = await response.json();
+
+    // console.log(data);
+
+    setImage(data.image);
+    setResult(data.ans);
   };
+
+  // const onClickCheck = (event) => {
+  //   event.preventDefault();
+  // };
 
   return (
     <div className="automata">
@@ -113,22 +129,35 @@ export function Automata(props) {
       />
 
       <input
-        className="regexp"
-        placeholder="Регулярка"
-        value={regexp}
+        className="word_checked"
+        placeholder="Проверяемое слово"
+        value={word_checked}
         onChange={(event) => {
-          setRegexp(event.target.value);
+          setWord(event.target.value);
         }}
       />
 
       <div className="automata-img">
-        {img !== "" && <img src={automata.image} alt="Empty automata" />}
+        {image && image !== "" && <img src={image} alt="Empty automata" />}
+        {(!image || image === "") && <h1>Здесь будет построенный автомат</h1>}
+      </div>
+
+      <div className="word_result">
+        {word_result !== undefined &&
+          (word_result ? (
+            <p className="word-in-lang">В языке</p>
+          ) : (
+            <p className="word-not-in-lang">Нет в языке</p>
+          ))}
       </div>
 
       <div className="buttons">
         <button className="simple-button" onClick={onClickBuild}>
           Построить
         </button>
+        {/*<button className="simple-button" onClick={onClickCheck}>*/}
+        {/*  Проверить*/}
+        {/*</button>*/}
         <button className="simple-button" onClick={onClickSave}>
           Сохранить
         </button>
@@ -137,11 +166,11 @@ export function Automata(props) {
             Удалить
           </button>
         )}
-        <ErrorMsg
-          isCorrect={!isClickUnlogin}
-          text="Для сохранения надо залогиниться"
-          cssName="save-error"
-        />
+        <div>
+          {isClickUnlogin && (
+            <p className="save-error">Для сохранения надо залогиниться</p>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -149,5 +178,5 @@ export function Automata(props) {
 
 // {
 //   type: "SET_AUTOMATA",
-//   payload: {name: "name", grammar: ["S", "SDS"], regexp: "reg", date: "13.10.2021", user_id: 1, id: 1},
+//   payload: {name: "name", grammar: ["S", "SDS"], word_checked: "reg", date: "13.10.2021", user_id: 1, id: 1},
 // }
